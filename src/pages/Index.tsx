@@ -141,16 +141,21 @@ const Index = () => {
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen">
       {/* Header */}
-      <header className="border-b">
-        <div className="container mx-auto px-4 py-4">
+      <header className="library-header">
+        <div className="container mx-auto px-4 py-6">
           <div className="flex items-center justify-between">
-            <h1 className="text-2xl font-bold text-primary">📚 Ma Librairie</h1>
+            <div className="flex items-center gap-3">
+              <div className="text-3xl">📚</div>
+              <h1 className="text-3xl font-bold text-primary tracking-tight">
+                Bibliothèque Lovable
+              </h1>
+            </div>
             <div className="flex items-center gap-4">
               {user ? (
-                <div className="flex items-center gap-2">
-                  <span className="text-sm text-muted-foreground">
+                <div className="flex items-center gap-3">
+                  <span className="text-sm text-muted-foreground bg-secondary/50 px-3 py-1 rounded-full">
                     Bonjour, {user.email}
                   </span>
                   <Button variant="outline" size="sm" onClick={handleSignOut}>
@@ -158,7 +163,7 @@ const Index = () => {
                   </Button>
                 </div>
               ) : (
-                <Button onClick={() => setShowAuthModal(true)}>
+                <Button onClick={() => setShowAuthModal(true)} className="leather-button">
                   Se connecter
                 </Button>
               )}
@@ -168,16 +173,27 @@ const Index = () => {
       </header>
 
       <main className="container mx-auto px-4 py-8">
+        {/* Intro Section */}
+        <div className="text-center mb-12">
+          <h2 className="text-4xl font-bold text-primary mb-4">
+            Découvrez notre collection
+          </h2>
+          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+            Explorez une sélection soigneusement choisie de livres classiques et contemporains. 
+            Partagez vos avis et découvrez les recommandations de notre communauté de lecteurs.
+          </p>
+        </div>
+
         {/* Filtres */}
-        <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center">
+        <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center justify-center">
           <Input
             placeholder="Rechercher un livre ou un auteur..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="max-w-md"
+            className="max-w-md bg-card border-2 focus:border-primary/50"
           />
           <Select value={categoryFilter} onValueChange={setCategoryFilter}>
-            <SelectTrigger className="w-48">
+            <SelectTrigger className="w-48 bg-card border-2 focus:border-primary/50">
               <SelectValue placeholder="Catégorie" />
             </SelectTrigger>
             <SelectContent>
