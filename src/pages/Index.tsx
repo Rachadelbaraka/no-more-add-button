@@ -9,6 +9,16 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useToast } from "@/hooks/use-toast";
 import { User } from "@supabase/supabase-js";
 
+// Import des illustrations générées
+import cover1984 from "@/assets/1984-cover.jpg";
+import coverDune from "@/assets/dune-cover.jpg";
+import coverHarryPotter from "@/assets/harry-potter-cover.jpg";
+import coverEtranger from "@/assets/etranger-cover.jpg";
+import coverPetitPrince from "@/assets/petit-prince-cover.jpg";
+import coverLotr from "@/assets/lotr-cover.jpg";
+import coverMiserables from "@/assets/miserables-cover.jpg";
+import coverPridePrejudice from "@/assets/pride-prejudice-cover.jpg";
+
 export interface Book {
   id: string;
   title: string;
@@ -67,7 +77,42 @@ const Index = () => {
         .order("created_at", { ascending: false });
 
       if (error) throw error;
-      setBooks(data || []);
+      
+      // Mapper les livres avec les illustrations locales
+      const booksWithLocalCovers = (data || []).map(book => {
+        let localCover = book.cover_url;
+        
+        switch (book.title) {
+          case "1984":
+            localCover = cover1984;
+            break;
+          case "Dune":
+            localCover = coverDune;
+            break;
+          case "Harry Potter à l'école des sorciers":
+            localCover = coverHarryPotter;
+            break;
+          case "L'Étranger":
+            localCover = coverEtranger;
+            break;
+          case "Le Petit Prince":
+            localCover = coverPetitPrince;
+            break;
+          case "Le Seigneur des Anneaux":
+            localCover = coverLotr;
+            break;
+          case "Les Misérables":
+            localCover = coverMiserables;
+            break;
+          case "Orgueil et Préjugés":
+            localCover = coverPridePrejudice;
+            break;
+        }
+        
+        return { ...book, cover_url: localCover };
+      });
+      
+      setBooks(booksWithLocalCovers);
     } catch (error) {
       toast({
         title: "Erreur",
