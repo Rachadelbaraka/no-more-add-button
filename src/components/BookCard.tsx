@@ -8,10 +8,11 @@ interface BookCardProps {
   book: Book;
   reviews: Review[];
   onReviewClick: () => void;
+  onViewReviews: () => void;
   canReview: boolean;
 }
 
-export const BookCard = ({ book, reviews, onReviewClick, canReview }: BookCardProps) => {
+export const BookCard = ({ book, reviews, onReviewClick, onViewReviews, canReview }: BookCardProps) => {
   const averageRating = reviews.length > 0 
     ? reviews.reduce((sum, review) => sum + review.rating, 0) / reviews.length 
     : 0;
@@ -62,9 +63,12 @@ export const BookCard = ({ book, reviews, onReviewClick, canReview }: BookCardPr
 
         <div className="flex items-center gap-2 mb-3">
           <div className="flex">{renderStars(averageRating)}</div>
-          <span className="text-sm text-muted-foreground font-medium">
+          <button 
+            onClick={onViewReviews}
+            className="text-sm text-muted-foreground font-medium hover:text-primary transition-colors underline"
+          >
             ({reviews.length} avis)
-          </span>
+          </button>
         </div>
 
         {book.price && (

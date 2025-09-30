@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { BookCard } from "@/components/BookCard";
 import { ReviewForm } from "@/components/ReviewForm";
+import { ReviewsList } from "@/components/ReviewsList";
 import { AuthModal } from "@/components/AuthModal";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -51,6 +52,7 @@ const Index = () => {
   const [reviews, setReviews] = useState<Review[]>([]);
   const [selectedBook, setSelectedBook] = useState<Book | null>(null);
   const [showReviewForm, setShowReviewForm] = useState(false);
+  const [showReviewsList, setShowReviewsList] = useState(false);
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [user, setUser] = useState<User | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
@@ -145,6 +147,11 @@ const Index = () => {
     } else {
       setShowAuthModal(true);
     }
+  };
+
+  const handleViewReviews = (book: Book) => {
+    setSelectedBook(book);
+    setShowReviewsList(true);
   };
 
   const handleReviewSubmitted = () => {
@@ -260,6 +267,7 @@ const Index = () => {
               book={book}
               reviews={reviews.filter(r => r.book_id === book.id)}
               onReviewClick={() => handleBookSelect(book)}
+              onViewReviews={() => handleViewReviews(book)}
               canReview={!!user}
             />
           ))}
@@ -283,6 +291,13 @@ const Index = () => {
             setShowReviewForm(true);
           }
         }}
+      />
+
+      <ReviewsList
+        open={showReviewsList}
+        onOpenChange={setShowReviewsList}
+        book={selectedBook}
+        reviews={selectedBook ? reviews.filter(r => r.book_id === selectedBook.id) : []}
       />
 
       <ReviewForm
